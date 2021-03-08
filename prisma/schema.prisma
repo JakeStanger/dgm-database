@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Track {
+  id           Int         @id @default(autoincrement())
+  name         String      @unique
+  length       Int?
+  index        Int?
+  album        Album?      @relation(fields: [albumId], references: [id])
+  ShowTrack    ShowTrack[]
+  albumId      Int?
+  primaryTrack Boolean?
+}
+
+model Album {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  releaseDate DateTime
+
+  tracks Track[]
+}
+
+model ShowTrack {
+  id    Int   @id @default(autoincrement())
+  track Track @relation(fields: [trackId], references: [id])
+  show  Show  @relation(fields: [showId], references: [id])
+
+  index   Int
+  length  Int?
+  trackId Int
+  showId  Int
+}
+
+model ShowMember {
+  id          Int          @id @default(autoincrement())
+  member      Member       @relation(fields: [memberId], references: [id])
+  show        Show         @relation(fields: [showId], references: [id])
+  instruments String[]
+
+  memberId Int
+  showId   Int
+}
+
+model Show {
+  id Int @id // dgm show id
+
+  venue       String?
+  location    String?
+  quality     Int?
+  date        DateTime?
+  description String? // TODO: Text
+  source      String?
+  cover       String?
+  hasDownload Boolean?
+
+  members ShowMember[]
+  tracks  ShowTrack[]
+}
+
+model Member {
+  id         Int          @id @default(autoincrement())
+  name       String       @unique
+  ShowMember ShowMember[]
+}
+
+//model Instrument {
+//  id           Int         @id @default(autoincrement())
+//  name         String      @unique
+//
+//  members       ShowMember[]
+//}
+
+model TourSync {
+  date       DateTime @unique @default(now())
+  lowerBound Int
+  upperBound Int
+}
