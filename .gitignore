@@ -3,4 +3,3 @@ node_modules
 /temp
 /lib
 /logs
-/prisma/migrations
