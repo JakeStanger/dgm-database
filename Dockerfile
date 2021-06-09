@@ -2,7 +2,7 @@ FROM node:14.17.0-alpine as builder
 
 WORKDIR /app
 
-RUN apk --no-cache upgrade && apk add yarn
+RUN apk --no-cache upgrade && apk add yarn curl
 
 COPY ./package.json package.json
 COPY ./yarn.lock yarn.lock
@@ -23,5 +23,7 @@ COPY --from=builder /app/yarn.lock ./yarn.lock
 COPY --from=builder /app/lib ./lib
 
 EXPOSE 3000
+
+HEALTHCHECK --interval=60s --timeout=3s CMD curl --fail http://localhost:5002 || exit 1
 
 ENTRYPOINT ["yarn", "start"]
