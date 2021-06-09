@@ -34,7 +34,7 @@ app.get("/show/:id", async (req, res) => {
 app.get("/track", async (req, res) => {
   const tracks = await prisma.track.findMany({
     where: { primaryTrack: true },
-    orderBy: { album: { releaseDate: "asc" } },
+    orderBy: { name: "asc" },
   });
 
   return res.json({ data: tracks });
