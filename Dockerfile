@@ -26,6 +26,6 @@ COPY --from=builder /app/lib ./lib
 
 EXPOSE 3000
 
-HEALTHCHECK --interval=60s --timeout=3s CMD curl --fail http://localhost:5002 || exit 1
+HEALTHCHECK --interval=60s --timeout=3s CMD curl --fail http://localhost:3000 || exit 1
 
 ENTRYPOINT ["yarn", "start"]
