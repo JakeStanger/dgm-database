@@ -2,7 +2,7 @@ FROM node:14.17.0-alpine as builder
 
 WORKDIR /app
 
-RUN apk --no-cache upgrade && apk add yarn curl
+RUN apk --no-cache upgrade && apk add yarn
 
 COPY ./package.json package.json
 COPY ./yarn.lock yarn.lock
@@ -16,6 +16,8 @@ COPY . .
 RUN yarn build
 
 FROM node:alpine
+
+RUN apk --no-cache upgrade && apk add curl
 
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
