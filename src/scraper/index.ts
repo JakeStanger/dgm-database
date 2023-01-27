@@ -14,7 +14,7 @@ async function getMostRecentTour() {
   const page = await fetch(URL).then((r) => r.text());
 
   const firstShowSelector =
-    "div.tour-date-row:nth-child(1) > div:nth-child(1) > div:nth-child(2) > a:nth-child(1)";
+    "div.tour-date-row:nth-child(1) > div:nth-child(1) > div:nth-child(3) > a:nth-child(1)";
   const url = $(firstShowSelector, page).attr("href");
 
   if (!url) {
